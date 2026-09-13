@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../data/dummy_books.dart';
 import '../../models/book.dart';
+import '../../routes/app_routes.dart';
 import '../../utils/favorites_manager.dart';
 import '../../widgets/book_card.dart';
 
@@ -71,7 +72,18 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Results for "${widget.query}"')),
+      appBar: AppBar(
+        title: Text('Results for "${widget.query}"'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.favorite),
+            tooltip: 'Favorites',
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.favorites);
+            },
+          ),
+        ],
+      ),
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _results.isEmpty
