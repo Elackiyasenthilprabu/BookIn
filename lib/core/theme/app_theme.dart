@@ -8,9 +8,7 @@ class AppTheme {
 
   static const String fontFamily = 'Poppins';
 
-  // ---------------------------------------------------------------------------
-  // LIGHT THEME
-  // ---------------------------------------------------------------------------
+  // light theme
   static ThemeData get lightTheme {
     final colorScheme = ColorScheme.fromSeed(
       seedColor: AppColors.primary,
@@ -124,9 +122,7 @@ class AppTheme {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // DARK THEME
-  // ---------------------------------------------------------------------------
+  // dark theme
   static ThemeData get darkTheme {
     final colorScheme = ColorScheme.fromSeed(
       seedColor: AppColors.primaryLight,
