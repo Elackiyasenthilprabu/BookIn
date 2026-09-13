@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/book.dart';
+import '../../routes/app_routes.dart';
 import '../../utils/favorites_manager.dart';
 import '../../widgets/book_card.dart';
 
@@ -41,7 +42,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   book: book,
                   isFavorite: true,
                   onTap: () {
-                    // TODO: navigate to Book Details screen once merged.
+                    Navigator.pushNamed(
+                      context,
+                      AppRoutes.bookDetails,
+                      arguments: book,
+                    );
                   },
                   onFavoriteTap: () {
                     setState(() {

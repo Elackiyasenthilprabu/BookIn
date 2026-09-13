@@ -65,8 +65,11 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
 
   void _onBookTap(Book book) {
     FavoritesManager.instance.addRecentlyViewed(book);
-    // TODO: navigate to Book Details screen once merged (Member 2's module).
-    // Navigator.push(context, MaterialPageRoute(builder: (_) => BookDetailsScreen(book: book)));
+    Navigator.pushNamed(
+      context,
+      AppRoutes.bookDetails,
+      arguments: book,
+    );
   }
 
   @override
