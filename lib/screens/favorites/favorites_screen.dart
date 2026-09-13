@@ -3,6 +3,7 @@ import '../../models/book.dart';
 import '../../routes/app_routes.dart';
 import '../../utils/favorites_manager.dart';
 import '../../widgets/book_card.dart';
+import '../../widgets/options_menu.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
@@ -17,7 +18,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     final List<Book> favorites = FavoritesManager.instance.favorites;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Favorites')),
+      appBar: AppBar(
+        title: const Text('Favorites'),
+        actions: const [
+          AppOptionsMenu(),
+        ],
+      ),
       body: favorites.isEmpty
           ? Center(
               child: Column(

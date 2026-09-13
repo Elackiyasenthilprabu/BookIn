@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../data/dummy_books.dart';
 import '../../models/book.dart';
 import '../../routes/app_routes.dart';
+import '../../widgets/options_menu.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -59,12 +60,13 @@ class _SearchScreenState extends State<SearchScreen> {
         title: const Text('Search'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.favorite),
+            icon: const Icon(Icons.favorite_border),
             tooltip: 'Favorites',
             onPressed: () {
               Navigator.pushNamed(context, AppRoutes.favorites);
             },
           ),
+          const AppOptionsMenu(),
         ],
       ),
       body: Column(
