@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../data/dummy_books.dart';
 import '../../models/book.dart';
-import 'search_results_screen.dart';
+import '../../routes/app_routes.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -34,16 +34,15 @@ class _SearchScreenState extends State<SearchScreen> {
       dummyBooks.map((b) => b.department).toSet().toList();
 
   void _runSearch(String query) {
-    Navigator.push(
+    Navigator.pushNamed(
       context,
-      MaterialPageRoute(
-        builder: (_) => SearchResultsScreen(
-          query: query,
-          category: _selectedCategory,
-          department: _selectedDepartment,
-          sortBy: _sortBy,
-        ),
-      ),
+      AppRoutes.searchResults,
+      arguments: {
+        'query': query,
+        'category': _selectedCategory,
+        'department': _selectedDepartment,
+        'sortBy': _sortBy,
+      },
     );
   }
 
@@ -56,7 +55,18 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Search')),
+      appBar: AppBar(
+        title: const Text('Search'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.favorite),
+            tooltip: 'Favorites',
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.favorites);
+            },
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Padding(
@@ -81,7 +91,7 @@ class _SearchScreenState extends State<SearchScreen> {
               children: [
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    value: _selectedCategory,
+                    initialValue: _selectedCategory,
                     hint: const Text('Category'),
                     items: _categories
                         .map((c) => DropdownMenuItem(value: c, child: Text(c)))
@@ -92,7 +102,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    value: _selectedDepartment,
+                    initialValue: _selectedDepartment,
                     hint: const Text('Department'),
                     items: _departments
                         .map((d) => DropdownMenuItem(value: d, child: Text(d)))
