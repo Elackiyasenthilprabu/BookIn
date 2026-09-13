@@ -28,7 +28,7 @@ class BookCard extends StatelessWidget {
             width: 56,
             height: 56,
             fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => Container(
+            errorBuilder: (context, error, stackTrace) => Container(
               width: 56,
               height: 56,
               color: Colors.grey[300],

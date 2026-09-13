@@ -81,7 +81,7 @@ class _SearchScreenState extends State<SearchScreen> {
               children: [
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    value: _selectedCategory,
+                    initialValue: _selectedCategory,
                     hint: const Text('Category'),
                     items: _categories
                         .map((c) => DropdownMenuItem(value: c, child: Text(c)))
@@ -92,7 +92,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: DropdownButtonFormField<String>(
-                    value: _selectedDepartment,
+                    initialValue: _selectedDepartment,
                     hint: const Text('Department'),
                     items: _departments
                         .map((d) => DropdownMenuItem(value: d, child: Text(d)))
