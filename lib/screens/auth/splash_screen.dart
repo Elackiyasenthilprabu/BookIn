@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     _timer = Timer(const Duration(seconds: 2), () {
       if (mounted) {
-        Navigator.of(context).pushReplacementNamed(AppRoutes.search);
+        Navigator.of(context).pushReplacementNamed(AppRoutes.onboarding);
       }
     });
   }
