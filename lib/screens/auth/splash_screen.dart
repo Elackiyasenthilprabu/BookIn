@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-
-import 'onboarding_screen.dart';
+import '../../routes/app_routes.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -12,68 +10,53 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
+    _timer = Timer(const Duration(seconds: 2), () {
+      if (mounted) {
+        Navigator.of(context).pushReplacementNamed(AppRoutes.search);
+      }
+    });
+  }
 
-    Timer(
-      const Duration(seconds: 3),
-      () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const OnboardingScreen(),
-          ),
-        );
-      },
-    );
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-
-            // App Logo
-            Container(
-              height: 120,
-              width: 120,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: const Icon(
-                Icons.menu_book_rounded,
-                size: 70,
-                color: Colors.white,
-              ),
+            Icon(
+              Icons.menu_book_rounded,
+              size: 80,
+              color: theme.colorScheme.primary,
             ),
-
-            const SizedBox(height: 25),
-
-            // App Name
+            const SizedBox(height: 20),
             Text(
               'Book Exchange',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: theme.textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.primary,
+              ),
             ),
-
-            const SizedBox(height: 10),
-
-            // Tagline
+            const SizedBox(height: 8),
             Text(
-              'Buy • Rent • Exchange',
-              style: Theme.of(context).textTheme.bodyMedium,
+              'Buy, Sell & Exchange Books',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: Colors.grey.shade600,
+              ),
             ),
-
-            const SizedBox(height: 40),
-
-            // Loading indicator
+            const SizedBox(height: 36),
             const CircularProgressIndicator(),
           ],
         ),
