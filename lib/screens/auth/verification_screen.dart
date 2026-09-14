@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../profile/profile_screen.dart';
+import '../../routes/app_routes.dart';
 
 class VerificationScreen extends StatefulWidget {
   final String email;
@@ -78,11 +78,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
               const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushAndRemoveUntil(
+                  Navigator.pushNamedAndRemoveUntil(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => const ProfileScreen(),
-                    ),
+                    AppRoutes.search,
                     (route) => false,
                   );
                 },

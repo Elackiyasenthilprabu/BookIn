@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'edit_profile_screen.dart';
-import '../auth/login_screen.dart';
+import '../../routes/app_routes.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -16,12 +15,7 @@ class ProfileScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.edit_outlined),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const EditProfileScreen(),
-                ),
-              );
+              Navigator.pushNamed(context, AppRoutes.editProfile);
             },
           ),
         ],
@@ -64,7 +58,9 @@ class ProfileScreen extends StatelessWidget {
               leading: const Icon(Icons.book_outlined),
               title: const Text('My Listed Books'),
               trailing: const Icon(Icons.chevron_right),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.myListings);
+              },
             ),
             ListTile(
               leading: const Icon(Icons.history_rounded),
@@ -82,9 +78,9 @@ class ProfileScreen extends StatelessWidget {
               leading: const Icon(Icons.logout, color: Colors.redAccent),
               title: const Text('Log Out', style: TextStyle(color: Colors.redAccent)),
               onTap: () {
-                Navigator.pushAndRemoveUntil(
+                Navigator.pushNamedAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  AppRoutes.login,
                   (route) => false,
                 );
               },

@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import '../models/book.dart';
+import '../screens/auth/forgot_password_screen.dart';
+import '../screens/auth/login_screen.dart';
+import '../screens/auth/onboarding_screen.dart';
+import '../screens/auth/register_screen.dart';
 import '../screens/auth/splash_screen.dart';
+import '../screens/auth/verification_screen.dart';
 import '../screens/common/placeholder_screen.dart';
 import '../screens/favorites/favorites_screen.dart';
+import '../screens/profile/edit_profile_screen.dart';
+import '../screens/profile/profile_screen.dart';
 import '../screens/search/search_results_screen.dart';
 import '../screens/search/search_screen.dart';
 
@@ -15,6 +22,7 @@ class AppRoutes {
   static const String login = '/login';
   static const String register = '/register';
   static const String forgotPassword = '/forgot-password';
+  static const String verification = '/verification';
   static const String profile = '/profile';
   static const String editProfile = '/edit-profile';
 
@@ -31,50 +39,18 @@ class AppRoutes {
   static const String favorites = '/favorites';
 
   static Map<String, WidgetBuilder> get routes => {
-        // Implemented Screens
+        // Common
         splash: (context) => const SplashScreen(),
-        search: (context) => const SearchScreen(),
-        favorites: (context) => const FavoritesScreen(),
 
-        // Member 1: Auth & User Management Placeholders
-        onboarding: (context) => const PlaceholderScreen(
-              title: 'Onboarding',
-              subtitle: 'Welcome slides introducing BookIn app features.',
-              moduleOwner: 'Member 1 (Auth & User Management)',
-              icon: Icons.auto_stories_rounded,
-            ),
-        login: (context) => const PlaceholderScreen(
-              title: 'Login',
-              subtitle: 'Sign in with email and password or Google Auth.',
-              moduleOwner: 'Member 1 (Auth & User Management)',
-              icon: Icons.login_rounded,
-            ),
-        register: (context) => const PlaceholderScreen(
-              title: 'Registration',
-              subtitle: 'Create a new account with college email verification.',
-              moduleOwner: 'Member 1 (Auth & User Management)',
-              icon: Icons.person_add_alt_1_rounded,
-            ),
-        forgotPassword: (context) => const PlaceholderScreen(
-              title: 'Forgot Password',
-              subtitle: 'Password reset link sent to your registered email.',
-              moduleOwner: 'Member 1 (Auth & User Management)',
-              icon: Icons.lock_reset_rounded,
-            ),
-        profile: (context) => const PlaceholderScreen(
-              title: 'User Profile',
-              subtitle: 'View user profile, photo, and account details.',
-              moduleOwner: 'Member 1 (Auth & User Management)',
-              icon: Icons.account_circle_rounded,
-            ),
-        editProfile: (context) => const PlaceholderScreen(
-              title: 'Edit Profile',
-              subtitle: 'Update username, avatar, contact number, and department.',
-              moduleOwner: 'Member 1 (Auth & User Management)',
-              icon: Icons.manage_accounts_rounded,
-            ),
+        // Member 1: Auth & User Management — Real Screens
+        onboarding: (context) => const OnboardingScreen(),
+        login: (context) => const LoginScreen(),
+        register: (context) => const RegisterScreen(),
+        forgotPassword: (context) => const ForgotPasswordScreen(),
+        profile: (context) => const ProfileScreen(),
+        editProfile: (context) => const EditProfileScreen(),
 
-        // Member 2: Book Management Placeholders
+        // Member 2: Book Management — Placeholders (not yet implemented)
         home: (context) => const PlaceholderScreen(
               title: 'Home Dashboard',
               subtitle: 'Featured listings, recent books, and categories.',
@@ -89,19 +65,26 @@ class AppRoutes {
             ),
         editBook: (context) => const PlaceholderScreen(
               title: 'Edit Book Listing',
-              subtitle: 'Update book details, pricing, condition, or availability.',
+              subtitle:
+                  'Update book details, pricing, condition, or availability.',
               moduleOwner: 'Member 2 (Book Management)',
               icon: Icons.edit_note_rounded,
             ),
         myListings: (context) => const PlaceholderScreen(
               title: 'My Book Listings',
-              subtitle: 'Manage and track the books you have posted for sale/exchange.',
+              subtitle:
+                  'Manage and track the books you have posted for sale/exchange.',
               moduleOwner: 'Member 2 (Book Management)',
               icon: Icons.list_alt_rounded,
             ),
+
+        // Member 3: Search & Discovery — Real Screens
+        search: (context) => const SearchScreen(),
+        favorites: (context) => const FavoritesScreen(),
       };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+    // Search Results — requires query arguments
     if (settings.name == searchResults) {
       final args = settings.arguments as Map<String, dynamic>? ?? {};
       return MaterialPageRoute(
@@ -115,6 +98,18 @@ class AppRoutes {
       );
     }
 
+    // Verification — requires email argument
+    if (settings.name == verification) {
+      final args = settings.arguments as Map<String, dynamic>? ?? {};
+      return MaterialPageRoute(
+        builder: (_) => VerificationScreen(
+          email: args['email'] as String? ?? '',
+        ),
+        settings: settings,
+      );
+    }
+
+    // Book Details — requires Book argument
     if (settings.name == bookDetails) {
       final book = settings.arguments as Book?;
       return MaterialPageRoute(
@@ -130,11 +125,13 @@ class AppRoutes {
       );
     }
 
+    // Fall back to static routes map
     final builder = routes[settings.name];
     if (builder != null) {
       return MaterialPageRoute(builder: builder, settings: settings);
     }
 
+    // 404
     return MaterialPageRoute(
       builder: (_) => Scaffold(
         appBar: AppBar(title: const Text('Page Not Found')),

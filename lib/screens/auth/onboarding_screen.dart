@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'login_screen.dart';
+import '../../routes/app_routes.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -52,22 +51,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         curve: Curves.easeInOut,
       );
     } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
-        ),
-      );
+      Navigator.pushReplacementNamed(context, AppRoutes.login);
     }
   }
 
   void skipOnboarding() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const LoginScreen(),
-      ),
-    );
+    Navigator.pushReplacementNamed(context, AppRoutes.login);
   }
 
   @override

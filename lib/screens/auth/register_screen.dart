@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'verification_screen.dart';
+import '../../routes/app_routes.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -87,13 +87,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => VerificationScreen(
-                            email: _emailController.text,
-                          ),
-                        ),
+                        AppRoutes.verification,
+                        arguments: {'email': _emailController.text},
                       );
                     }
                   },
