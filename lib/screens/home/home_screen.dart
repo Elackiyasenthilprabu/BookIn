@@ -82,7 +82,19 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 24),
 
             // ── Featured Books Carousel ──
-            _buildSectionTitle(theme, 'Featured Books'),
+            _buildSectionTitle(
+              theme,
+              'Featured Books',
+              trailing: TextButton(
+                onPressed: () =>
+                    Navigator.pushNamed(context, AppRoutes.bookListing),
+                style: TextButton.styleFrom(
+                  visualDensity: VisualDensity.compact,
+                  padding: EdgeInsets.zero,
+                ),
+                child: const Text('View All'),
+              ),
+            ),
             const SizedBox(height: 12),
             _buildFeaturedCarousel(theme, isDark),
 
@@ -94,11 +106,21 @@ class _HomeScreenState extends State<HomeScreen> {
               _selectedCategory == 'All'
                   ? 'All Books'
                   : '$_selectedCategory Books',
-              trailing: Text(
-                '${_filteredBooks.length} found',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
+              trailing: TextButton(
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  AppRoutes.bookListing,
+                  arguments: {
+                    'category': _selectedCategory == 'All'
+                        ? null
+                        : _selectedCategory,
+                  },
                 ),
+                style: TextButton.styleFrom(
+                  visualDensity: VisualDensity.compact,
+                  padding: EdgeInsets.zero,
+                ),
+                child: const Text('View All'),
               ),
             ),
             const SizedBox(height: 8),

@@ -8,6 +8,7 @@ import '../screens/auth/splash_screen.dart';
 import '../screens/auth/verification_screen.dart';
 import '../screens/common/placeholder_screen.dart';
 import '../screens/favorites/favorites_screen.dart';
+import '../screens/home/book_listing_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/profile/edit_profile_screen.dart';
 import '../screens/profile/profile_screen.dart';
@@ -29,6 +30,7 @@ class AppRoutes {
 
   // Member 2 - Book Management
   static const String home = '/home';
+  static const String bookListing = '/book-listing';
   static const String bookDetails = '/book-details';
   static const String addBook = '/add-book';
   static const String editBook = '/edit-book';
@@ -80,6 +82,17 @@ class AppRoutes {
       };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+    // Book Listing — optional category argument
+    if (settings.name == bookListing) {
+      final args = settings.arguments as Map<String, dynamic>? ?? {};
+      return MaterialPageRoute(
+        builder: (_) => BookListingScreen(
+          initialCategory: args['category'] as String?,
+        ),
+        settings: settings,
+      );
+    }
+
     // Search Results — requires query arguments
     if (settings.name == searchResults) {
       final args = settings.arguments as Map<String, dynamic>? ?? {};
