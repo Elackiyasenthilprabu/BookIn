@@ -8,6 +8,7 @@ import '../screens/auth/splash_screen.dart';
 import '../screens/auth/verification_screen.dart';
 import '../screens/common/placeholder_screen.dart';
 import '../screens/favorites/favorites_screen.dart';
+import '../screens/home/book_details_screen.dart';
 import '../screens/home/book_listing_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/profile/edit_profile_screen.dart';
@@ -121,13 +122,16 @@ class AppRoutes {
     // Book Details — requires Book argument
     if (settings.name == bookDetails) {
       final book = settings.arguments as Book?;
+      if (book != null) {
+        return MaterialPageRoute(
+          builder: (_) => BookDetailsScreen(book: book),
+          settings: settings,
+        );
+      }
       return MaterialPageRoute(
-        builder: (_) => PlaceholderScreen(
-          title: book != null ? book.title : 'Book Details',
-          subtitle: book != null
-              ? 'Author: ${book.author} · Price: ₹${book.price}\nCondition & Exchange details'
-              : 'Detailed book information, seller contact, and exchange options.',
-          moduleOwner: 'Member 2 (Book Management)',
+        builder: (_) => const PlaceholderScreen(
+          title: 'Book Details',
+          subtitle: 'No book data provided.',
           icon: Icons.menu_book_rounded,
         ),
         settings: settings,
