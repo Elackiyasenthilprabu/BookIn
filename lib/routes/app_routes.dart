@@ -8,6 +8,11 @@ import '../screens/auth/splash_screen.dart';
 import '../screens/auth/verification_screen.dart';
 import '../screens/common/placeholder_screen.dart';
 import '../screens/favorites/favorites_screen.dart';
+import '../screens/home/add_edit_book_screen.dart';
+import '../screens/home/book_details_screen.dart';
+import '../screens/home/book_listing_screen.dart';
+import '../screens/home/home_screen.dart';
+import '../screens/home/my_listings_screen.dart';
 import '../screens/profile/edit_profile_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/search/search_results_screen.dart';
@@ -28,6 +33,7 @@ class AppRoutes {
 
   // Member 2 - Book Management
   static const String home = '/home';
+  static const String bookListing = '/book-listing';
   static const String bookDetails = '/book-details';
   static const String addBook = '/add-book';
   static const String editBook = '/edit-book';
@@ -50,33 +56,10 @@ class AppRoutes {
         profile: (context) => const ProfileScreen(),
         editProfile: (context) => const EditProfileScreen(),
 
-        // Member 2: Book Management — Placeholders (not yet implemented)
-        home: (context) => const PlaceholderScreen(
-              title: 'Home Dashboard',
-              subtitle: 'Featured listings, recent books, and categories.',
-              moduleOwner: 'Member 2 (Book Management)',
-              icon: Icons.dashboard_rounded,
-            ),
-        addBook: (context) => const PlaceholderScreen(
-              title: 'Add New Book',
-              subtitle: 'Post a book for exchange or sale with image upload.',
-              moduleOwner: 'Member 2 (Book Management)',
-              icon: Icons.add_box_rounded,
-            ),
-        editBook: (context) => const PlaceholderScreen(
-              title: 'Edit Book Listing',
-              subtitle:
-                  'Update book details, pricing, condition, or availability.',
-              moduleOwner: 'Member 2 (Book Management)',
-              icon: Icons.edit_note_rounded,
-            ),
-        myListings: (context) => const PlaceholderScreen(
-              title: 'My Book Listings',
-              subtitle:
-                  'Manage and track the books you have posted for sale/exchange.',
-              moduleOwner: 'Member 2 (Book Management)',
-              icon: Icons.list_alt_rounded,
-            ),
+        // Member 2: Book Management
+        home: (context) => const HomeScreen(),
+        addBook: (context) => const AddEditBookScreen(),
+        myListings: (context) => const MyListingsScreen(),
 
         // Member 3: Search & Discovery — Real Screens
         search: (context) => const SearchScreen(),
@@ -84,6 +67,26 @@ class AppRoutes {
       };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+    // Edit Book — requires Book argument
+    if (settings.name == editBook) {
+      final book = settings.arguments as Book?;
+      return MaterialPageRoute(
+        builder: (_) => AddEditBookScreen(book: book),
+        settings: settings,
+      );
+    }
+
+    // Book Listing — optional category argument
+    if (settings.name == bookListing) {
+      final args = settings.arguments as Map<String, dynamic>? ?? {};
+      return MaterialPageRoute(
+        builder: (_) => BookListingScreen(
+          initialCategory: args['category'] as String?,
+        ),
+        settings: settings,
+      );
+    }
+
     // Search Results — requires query arguments
     if (settings.name == searchResults) {
       final args = settings.arguments as Map<String, dynamic>? ?? {};
@@ -112,13 +115,16 @@ class AppRoutes {
     // Book Details — requires Book argument
     if (settings.name == bookDetails) {
       final book = settings.arguments as Book?;
+      if (book != null) {
+        return MaterialPageRoute(
+          builder: (_) => BookDetailsScreen(book: book),
+          settings: settings,
+        );
+      }
       return MaterialPageRoute(
-        builder: (_) => PlaceholderScreen(
-          title: book != null ? book.title : 'Book Details',
-          subtitle: book != null
-              ? 'Author: ${book.author} · Price: ₹${book.price}\nCondition & Exchange details'
-              : 'Detailed book information, seller contact, and exchange options.',
-          moduleOwner: 'Member 2 (Book Management)',
+        builder: (_) => const PlaceholderScreen(
+          title: 'Book Details',
+          subtitle: 'No book data provided.',
           icon: Icons.menu_book_rounded,
         ),
         settings: settings,
