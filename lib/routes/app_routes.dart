@@ -8,6 +8,7 @@ import '../screens/auth/splash_screen.dart';
 import '../screens/auth/verification_screen.dart';
 import '../screens/common/placeholder_screen.dart';
 import '../screens/favorites/favorites_screen.dart';
+import '../screens/home/add_edit_book_screen.dart';
 import '../screens/home/book_details_screen.dart';
 import '../screens/home/book_listing_screen.dart';
 import '../screens/home/home_screen.dart';
@@ -56,19 +57,7 @@ class AppRoutes {
 
         // Member 2: Book Management
         home: (context) => const HomeScreen(),
-        addBook: (context) => const PlaceholderScreen(
-              title: 'Add New Book',
-              subtitle: 'Post a book for exchange or sale with image upload.',
-              moduleOwner: 'Member 2 (Book Management)',
-              icon: Icons.add_box_rounded,
-            ),
-        editBook: (context) => const PlaceholderScreen(
-              title: 'Edit Book Listing',
-              subtitle:
-                  'Update book details, pricing, condition, or availability.',
-              moduleOwner: 'Member 2 (Book Management)',
-              icon: Icons.edit_note_rounded,
-            ),
+        addBook: (context) => const AddEditBookScreen(),
         myListings: (context) => const PlaceholderScreen(
               title: 'My Book Listings',
               subtitle:
@@ -83,6 +72,15 @@ class AppRoutes {
       };
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+    // Edit Book — requires Book argument
+    if (settings.name == editBook) {
+      final book = settings.arguments as Book?;
+      return MaterialPageRoute(
+        builder: (_) => AddEditBookScreen(book: book),
+        settings: settings,
+      );
+    }
+
     // Book Listing — optional category argument
     if (settings.name == bookListing) {
       final args = settings.arguments as Map<String, dynamic>? ?? {};
