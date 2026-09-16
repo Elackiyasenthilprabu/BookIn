@@ -12,6 +12,7 @@ import '../screens/home/add_edit_book_screen.dart';
 import '../screens/home/book_details_screen.dart';
 import '../screens/home/book_listing_screen.dart';
 import '../screens/home/home_screen.dart';
+import '../screens/home/my_listings_screen.dart';
 import '../screens/profile/edit_profile_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/search/search_results_screen.dart';
@@ -58,13 +59,7 @@ class AppRoutes {
         // Member 2: Book Management
         home: (context) => const HomeScreen(),
         addBook: (context) => const AddEditBookScreen(),
-        myListings: (context) => const PlaceholderScreen(
-              title: 'My Book Listings',
-              subtitle:
-                  'Manage and track the books you have posted for sale/exchange.',
-              moduleOwner: 'Member 2 (Book Management)',
-              icon: Icons.list_alt_rounded,
-            ),
+        myListings: (context) => const MyListingsScreen(),
 
         // Member 3: Search & Discovery — Real Screens
         search: (context) => const SearchScreen(),
