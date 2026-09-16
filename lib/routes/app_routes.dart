@@ -8,6 +8,7 @@ import '../screens/auth/splash_screen.dart';
 import '../screens/auth/verification_screen.dart';
 import '../screens/common/placeholder_screen.dart';
 import '../screens/favorites/favorites_screen.dart';
+import '../screens/home/home_screen.dart';
 import '../screens/profile/edit_profile_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/search/search_results_screen.dart';
@@ -50,13 +51,8 @@ class AppRoutes {
         profile: (context) => const ProfileScreen(),
         editProfile: (context) => const EditProfileScreen(),
 
-        // Member 2: Book Management — Placeholders (not yet implemented)
-        home: (context) => const PlaceholderScreen(
-              title: 'Home Dashboard',
-              subtitle: 'Featured listings, recent books, and categories.',
-              moduleOwner: 'Member 2 (Book Management)',
-              icon: Icons.dashboard_rounded,
-            ),
+        // Member 2: Book Management
+        home: (context) => const HomeScreen(),
         addBook: (context) => const PlaceholderScreen(
               title: 'Add New Book',
               subtitle: 'Post a book for exchange or sale with image upload.',
