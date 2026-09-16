@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_constants.dart';
+import '../../data/dummy_books.dart';
 import '../../models/book.dart';
 import '../../routes/app_routes.dart';
 import '../../utils/favorites_manager.dart';
@@ -603,31 +604,122 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
   void _showDeleteDialog(ThemeData theme) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete Book'),
-        content: Text(
-          'Are you sure you want to delete "${book.title}"? This action cannot be undone.',
+      builder: (dialogContext) => AlertDialog(
+        icon: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: AppColors.error.withValues(alpha: 0.1),
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(
+            Icons.delete_forever_rounded,
+            color: AppColors.error,
+            size: 32,
+          ),
         ),
+        title: const Text('Delete Book'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Are you sure you want to delete this book?',
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainerHighest,
+                borderRadius:
+                    BorderRadius.circular(AppConstants.radiusSmall),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.menu_book_rounded,
+                      size: 20, color: theme.colorScheme.primary),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          book.title,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          book.author,
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'This action cannot be undone.',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: AppColors.error,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+        actionsAlignment: MainAxisAlignment.center,
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Navigator.pop(dialogContext),
             child: const Text('Cancel'),
           ),
-          FilledButton(
+          FilledButton.icon(
             onPressed: () {
-              Navigator.pop(context); // close dialog
-              Navigator.pop(context); // go back
+              // Actually remove from dummyBooks
+              final removedIndex =
+                  dummyBooks.indexWhere((b) => b.id == book.id);
+              if (removedIndex != -1) {
+                dummyBooks.removeAt(removedIndex);
+              }
+
+              // Remove from favorites if present
+              if (FavoritesManager.instance.isFavorite(book)) {
+                FavoritesManager.instance.toggleFavorite(book);
+              }
+
+              Navigator.pop(dialogContext); // close dialog
+              Navigator.pop(context); // go back to previous screen
+
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('"${book.title}" deleted'),
+                  content: Text('"${book.title}" has been deleted'),
                   behavior: SnackBarBehavior.floating,
+                  action: SnackBarAction(
+                    label: 'Undo',
+                    onPressed: () {
+                      // Re-insert at the same position
+                      if (removedIndex != -1 &&
+                          removedIndex <= dummyBooks.length) {
+                        dummyBooks.insert(removedIndex, book);
+                      } else {
+                        dummyBooks.add(book);
+                      }
+                    },
+                  ),
                 ),
               );
             },
+            icon: const Icon(Icons.delete_rounded, size: 18),
+            label: const Text('Delete'),
             style: FilledButton.styleFrom(
               backgroundColor: AppColors.error,
             ),
-            child: const Text('Delete'),
           ),
         ],
       ),
